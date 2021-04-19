@@ -2,6 +2,7 @@
 let firstImage =document.getElementById('image1')
 let secondImage = document.getElementById('image2')
 let thirdImage = document.getElementById('image3')
+let image = document.getElementById('image')
 let attmpts = 0;
 let maxAttmpts = 25
 let leftimgInd;
@@ -65,9 +66,8 @@ thirdImage.src =Bus.ALL[leftimgInd].source,Bus.ALL[leftimgInd].shows++
 
 }
 renderImg()
-firstImage.addEventListener('click',clickingHand)
-secondImage.addEventListener('click',clickingHand)
-thirdImage.addEventListener('click',clickingHand)
+image.addEventListener('click',clickingHand)
+
 
 
 function clickingHand(event){
@@ -82,9 +82,8 @@ function clickingHand(event){
                 renderImg()
     }
     else {    
-          firstImage.removeEventListener('click',clickingHand)
-    secondImage.removeEventListener('click',clickingHand)
-    thirdImage.removeEventListener('click',clickingHand)
+          image.removeEventListener('click',clickingHand)
+   
      
         }
     
