@@ -12,6 +12,10 @@ let rightimgInd; // right '""
 let namesArray = []; //for chart , to put all the names from objects here
 // let sourceArray = []
 
+
+
+
+
 function Bus(name, source) { //  object constructor function (parameters) we use them when we give the objects a variables 
     // variables declared within a JavaScript function, become LOCAL to the function.
     // can only used inside the function
@@ -21,9 +25,11 @@ function Bus(name, source) { //  object constructor function (parameters) we use
     this.shows = 0;
     Bus.ALL.push(this) // The push() method adds new items to the end of an array, and returns the new length
     namesArray.push(this.name) //for chart
+    // save()
 
 
 }
+
 
 Bus.ALL = [];
 // calling the constructor function with the new keyword
@@ -47,14 +53,21 @@ new Bus('boots', 'images/boots.jpg');
 new Bus('bathroom', 'images/bathroom.jpg');
 new Bus('bannana', 'images/banana.jpg');;
 new Bus('bag', 'images/bag.jpg')
-// console.log(Bus.ALL)
+console.log(Bus.ALL)
+ 
 
 
-var displayIMg = []
+
+
+var displayIMg = [] // new array to save data each time runs
 function randomIndex() {
     return Math.floor(Math.random() * Bus.ALL.length)
 }// this for giving a radnom numeber each time it called
 // console.log(randomIndex())
+
+
+
+
 
 function renderImg() {   //for display the three images
     leftimgInd = randomIndex()
@@ -66,16 +79,28 @@ function renderImg() {   //for display the three images
         midimInd = randomIndex()
         rightimgInd = randomIndex()
     }
-// set attribute خاصية 
+
+
+
+
+    // set attribute خاصية 
     firstImage.src = Bus.ALL[rightimgInd].source, Bus.ALL[rightimgInd].shows++
     secondImage.src = Bus.ALL[midimInd].source, Bus.ALL[midimInd].shows++
     thirdImage.src = Bus.ALL[leftimgInd].source, Bus.ALL[leftimgInd].shows++
-// gives every array index a new one everytime the function runs
-    displayIMg[0] = leftimgInd;
-    displayIMg[1] = midimInd;
-    displayIMg[2] = rightimgInd;
+    // gives every array index a new one everytime the function runs
+    // طريقة 1
+    // displayIMg[0] = leftimgInd;
+    // displayIMg[1] = midimInd;
+    // displayIMg[2] = rightimgInd;
+    // طريقة 2
+    displayIMg = [leftimgInd, midimInd, rightimgInd] // to just have 3 indeicies every time , if we use push it will add 3 indcies everytime and have an infinite loop
+    // here we are reasign the 3 indiecis again
     console.log(displayIMg)
 }
+
+
+
+
 renderImg()
 //  when we use event listener its for how an elemnt will reacte when an action happened to it 
 image.addEventListener('click', clickingHand)
@@ -84,6 +109,7 @@ let button = document.getElementById('button')
 // button.onclick = listRender
 button.addEventListener('click', listRender)
 // button.removeEventListener('click',listRender)
+// save()
 
 
 
@@ -102,6 +128,7 @@ function clickingHand(event) {
             alert("please click on the image not the container")
             attmpts--;
         }
+        save() // calling the function to save data on the local storage
         renderImg()
     }
 
@@ -114,11 +141,36 @@ function clickingHand(event) {
 
 
 }
+// save()
+// retrive()
+// local storage :
+function save() {
+    let dataArray = JSON.stringify(Bus.ALL)
+    console.log(typeof Bus.ALL)
+    localStorage.setItem('products', dataArray)
+    console.log(typeof Bus.ALL)
+    console.log(Bus.ALL)
+}
+function retrive() {
+
+    let prod = localStorage.getItem('products')
+    let content = JSON.parse(prod)
+    console.log(Bus.ALL)
+
+    if (content) {
+        Bus.ALL = content
+    }
+    // listRender()
+    console.log(typeof Bus.ALL)
+}
+
+
+
 let clickArray = [];
 let showArray = [];
-
 function listRender() {
     let list = document.getElementById('list')
+    // retrive()
     for (let i = 0; i < Bus.ALL.length; i++) {
         clickArray.push(Bus.ALL[i].clicks)
         showArray.push(Bus.ALL[i].shows)
@@ -126,9 +178,18 @@ function listRender() {
         list.appendChild(lists)
         lists.textContent = `${Bus.ALL[i].name} had ${Bus.ALL[i].clicks} votes, and was seen ${Bus.ALL[i].shows}`
     }
-    button.removeEventListener('click',listRender)
+    // save()
+    // retrive() infintt loop
+    button.removeEventListener('click', listRender)
+    // retrive()
     chart()
+    // save()
 }
+
+
+
+
+// retrive()
 // chart()
 // ***************************************
 // chart
@@ -172,3 +233,5 @@ function chart() {
     );
 }
 
+retrive() // calling the function to show it on the website
+    //   button.removeEventListener('click',listRender)
